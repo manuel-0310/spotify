@@ -21,6 +21,7 @@ body {
 /* Glass card con más espacio interior */
 .login-section,
 .search-section {
+  padding-top: 60px;
   position: relative;
   background: rgba(255, 255, 255, 0.10);
   border-radius: 20px;
@@ -355,10 +356,13 @@ button:hover {
   background-color: #fff;
   width: 40%;
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border: none;
   border-radius: 15px;
   cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  display: flex;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
 }
