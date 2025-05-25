@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (filteredTracks.length === 0) {
-        resultsSection.innerHTML = `<p>No se encontraron canciones tuyas del artista "${artistName}".</p>`;
+        resultsSection.innerHTML = `<p>Parece que no has escuchado lo suficiente a  "${artistName}".</p>`;
         return;
       }
 
