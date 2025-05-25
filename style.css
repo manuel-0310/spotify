@@ -59,6 +59,19 @@ body {
   display: block;       /* necesario para que margin auto funcione */
 }
 
+#logout-btn {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  color: white;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1000;
+}
 
 
 /* Contenedor principal */

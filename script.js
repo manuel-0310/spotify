@@ -43,12 +43,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si no hay token, mostrar login
     loginSection.style.display = 'block';
     searchSection.style.display = 'none';
+    document.getElementById('logout-btn').style.display = 'none';
     return;
   }
 
   // Mostrar buscador y ocultar login
   loginSection.style.display = 'none';
   searchSection.style.display = 'block';
+  document.getElementById('logout-btn').style.display = 'block';
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('code_verifier');
+  location.reload(); // Recarga la página para volver al login
+});
+
 
   setTimeout(() => {
   input.focus();
