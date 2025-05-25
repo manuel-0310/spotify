@@ -1,12 +1,55 @@
-const accessToken = "BQD4yRQuaNek3EdfQvN7OEhHMeym0LLX_pPKrSkGYG2CHQXGrO2mbohnijcorDpUw8sOWkpDj-YErjbB60UwszAgSOXQBnR6zSyvxGqNxEDn_BR19C165n6Je5di0F7xtiTFuwA2ZV59Tgp_EEdOqbDW9Q3wRDlGt-MT486geIqYwxiAAijJTT76p3LQyFPiRbppKgI75dAt5tw1gzBTmC2bHdJBFZI";
+const clientId = 'd03b826ade884822b71d25a3b592a836';  // Tu Client ID
+const redirectUri = 'http://127.0.0.1:5500/callback.html';  // Tu redirect URI
+
+// Funciones PKCE
+function generateCodeVerifier() {
+  const array = new Uint8Array(56);
+  window.crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function generateCodeChallenge(codeVerifier) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(codeVerifier);
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+// Iniciar login
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const codeVerifier = generateCodeVerifier();
+  localStorage.setItem('code_verifier', codeVerifier);
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+  const scope = 'user-top-read';
+
+  const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
+  
+  window.location = authUrl;
+});
+
+// Aquí no hacemos más porque la autorización continúa en callback.html
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("artist-form");
-  const input = document.getElementById("artist-input");
-  const timeRangeSelect = document.getElementById("time-range");
-  const resultsSection = document.querySelector(".results-section");
+  const accessToken = localStorage.getItem('access_token');
+  const loginSection = document.querySelector('.login-section');
+  const searchSection = document.querySelector('.search-section');
+  const resultsSection = document.querySelector('.results-section');
+  const form = document.getElementById('artist-form');
+  const input = document.getElementById('artist-input');
+  const timeRangeSelect = document.getElementById('time-range');
 
-  form.addEventListener("submit", async (e) => {
+  if (!accessToken) {
+    // Si no hay token, mostrar login
+    loginSection.style.display = 'block';
+    searchSection.style.display = 'none';
+    return;
+  }
+
+  // Mostrar buscador y ocultar login
+  loginSection.style.display = 'none';
+  searchSection.style.display = 'block';
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const artistName = input.value.trim();
     const timeRange = timeRangeSelect.value;

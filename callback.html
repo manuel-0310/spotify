@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Callback Spotify</title>
+</head>
+<body>
+  <h2>Procesando autenticación...</h2>
+  <script>
+    async function getAccessToken(code) {
+      const codeVerifier = localStorage.getItem('code_verifier');
+
+      const body = new URLSearchParams({
+        client_id: 'd03b826ade884822b71d25a3b592a836',
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: 'http://127.0.0.1:5500/callback.html',
+        code_verifier: codeVerifier
+      });
+
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString()
+      });
+
+      if (!response.ok) {
+        document.body.innerHTML = '<p>Error al obtener el token</p>';
+        return null;
+      }
+
+      const data = await response.json();
+      return data.access_token;
+    }
+
+    async function main() {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      if (!code) {
+        document.body.innerHTML = '<p>No se encontró código de autorización</p>';
+        return;
+      }
+
+      const token = await getAccessToken(code);
+      if (!token) return;
+
+      // Guardamos el token para usarlo en index.html
+      localStorage.setItem('access_token', token);
+
+      // Redirigimos a la página principal para mostrar el buscador
+      window.location = 'index.html';
+    }
+
+    main();
+  </script>
+</body>
+</html>

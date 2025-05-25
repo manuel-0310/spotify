@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Top 5 Songs by Artist</title>
-        <link rel="stylesheet" href="style.css" />
-        <script src="script.js"></script>
-    </head>
-    <body>
-        <div class="circle circle1"></div>
-        <div class="circle circle2"></div>
-        <div class="circle circle3"></div>
-        <div class="circle circle4"></div>
-        <main class="container">
-            <section class="search-section">
-                <h1>¿Estás listo para saber el top 5 de tu artista favorito?</h1>
-                <form id="artist-form">
-                    <label for="time-range">Selecciona periodo:</label>
-                    <select id="time-range" name="time-range">
-                        <option value="short_term">Últimas 4 semanas</option>
-                        <option value="medium_term" selected>Últimos 6
-                            meses</option>
-                        <option value="long_term">Último año</option>
-                    </select>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Top 5 Songs by Artist - Login Spotify</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="login-section">
+      <h1>Conéctate con Spotify para ver tu Top 5 canciones por artista</h1>
+      <button id="login-btn">Conectar con Spotify</button>
+    </section>
 
-                    <input
-                        type="text"
-                        id="artist-input"
-                        name="artist"
-                        placeholder="Tu artista favorito" 
-                        autocomplete="off" />
-                    <button type="submit">Buscar</button>
-                </form>
+    <section class="search-section" style="display:none;">
+      <form id="artist-form">
+        <input 
+          type="text" 
+          id="artist-input" 
+          name="artist" 
+          placeholder="Tu artista favorito" 
+          autocomplete="off" 
+          required
+        />
+        <select id="time-range">
+          <option value="short_term">Últimas 4 semanas</option>
+          <option value="medium_term" selected>Últimos 6 meses</option>
+          <option value="long_term">Desde siempre</option>
+        </select>
+        <button type="submit">Buscar</button>
+      </form>
+    </section>
 
-            </section>
-            <section class="results-section" aria-live="polite">
-                <!-- Aquí se mostrarán las canciones -->
-            </section>
-        </main>
-    </body>
+    <section class="results-section" aria-live="polite"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>
