@@ -18,6 +18,48 @@ body {
     position: relative;
     overflow-x: hidden;
 }
+/* Glass card con más espacio interior */
+.login-section,
+.search-section {
+  position: relative;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    inset 0 0 50px rgba(0, 0, 0, 0.10),
+    0 8px 32px rgba(0, 0, 0, 0.40);
+
+  /* 👉 Aumentamos el espacio interior */
+  padding: 2.5rem 2rem;
+  
+  /* 👉 Para que sus hijos estén separados */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+/* INPUT full width, SELECT y BUTTON más pequeños */
+.login-section input[type="text"],
+.search-section input[type="text"] {
+  width: 100%;
+}
+
+.login-section #time-range,
+.search-section #time-range,
+.login-section button,
+.search-section button {
+  width: 60%;           /* ajusta este % a tu gusto */
+  max-width: 280px;     /* opcional, para no pasarse en pantallas grandes */
+  margin: 0 auto;       /* los centra horizontalmente */
+  display: block;       /* necesario para que margin auto funcione */
+}
+
+
 
 /* Contenedor principal */
 .container {
@@ -28,6 +70,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
+    height: 100%;
 }
 
 /* Degradados circulares animados en el fondo (en el body) */
@@ -46,8 +89,8 @@ body::after {
 .circle {
   position: fixed;
   border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.6;
+  filter: blur(70px);
+  opacity: 0.7;
   z-index: 1;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -67,7 +110,7 @@ body::after {
 
 /* Círculo 2 */
 .circle2 {
-  top: 50%;
+  top: 60%;
   left: 70%;
   transform: translateY(-50%);
   width: 280px;
@@ -94,8 +137,8 @@ body::after {
 
 /* Círculo 3 */
 .circle3 {
-  top: 20%;
-  right: -80px;
+  top: 15%;
+  right: 0px;
   width: 300px;
   height: 300px;
   background: radial-gradient(circle at center, #42e695, transparent 70%);
@@ -105,8 +148,8 @@ body::after {
 
 /* Círculo 4 */
 .circle4 {
-  bottom: 10%;
-  left: 20%;
+  bottom: -10%;
+  right: 0%;
   width: 250px;
   height: 250px;
   background: radial-gradient(circle at center, #00aaff, transparent 70%);
@@ -115,14 +158,44 @@ body::after {
 }
 
 /* Animaciones movimiento adicionales */
+@keyframes moveCircle1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-50px, 35px); }
+}
+
+@keyframes moveCircle2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(25px, -30px); }
+}
+
+/* Animaciones colores adicionales */
+@keyframes colorChange1 {
+  0%, 100% {
+    background: radial-gradient(circle at center, #e64242, transparent 70%);
+  }
+  50% {
+    background: radial-gradient(circle at center, #a76c28, transparent 70%);
+  }
+}
+
+@keyframes colorChange2 {
+  0%, 100% {
+    background: radial-gradient(circle at center, #ccff00, transparent 70%);
+  }
+  50% {
+    background: radial-gradient(circle at center, #549900, transparent 70%);
+  }
+}
+
+/* Animaciones movimiento adicionales */
 @keyframes moveCircle3 {
   0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-20px, 15px); }
+  50% { transform: translate(-30px, 25px); }
 }
 
 @keyframes moveCircle4 {
   0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(15px, -20px); }
+  50% { transform: translate(25px, -30px); }
 }
 
 /* Animaciones colores adicionales */
@@ -131,7 +204,7 @@ body::after {
     background: radial-gradient(circle at center, #42e695, transparent 70%);
   }
   50% {
-    background: radial-gradient(circle at center, #28a745, transparent 70%);
+    background: radial-gradient(circle at center, #28a79f, transparent 70%);
   }
 }
 
@@ -270,7 +343,6 @@ button:hover {
   width: 40%;
   font-weight: 700;
   font-size: 1.1rem;
-  padding: 0.75rem 2rem;
   border: none;
   border-radius: 15px;
   cursor: pointer;

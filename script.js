@@ -50,6 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
   loginSection.style.display = 'none';
   searchSection.style.display = 'block';
 
+  setTimeout(() => {
+  input.focus();
+}, 300);  // pequeño delay para asegurar que ya se renderizó
+
+setTimeout(() => {
+  timeRangeSelect.blur();
+}, 500); // ayuda a "resetear" el select para que el primer tap funcione
+
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const artistName = input.value.trim();
