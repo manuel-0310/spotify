@@ -1,5 +1,6 @@
 const clientId = 'd03b826ade884822b71d25a3b592a836';  // Tu Client ID
-const redirectUri = 'http://127.0.0.1:5500/callback.html';  // Tu redirect URI
+const redirectUri = 'https://manuel-0310.github.io/top5songs/callback.html';
+  // Tu redirect URI
 
 // Funciones PKCE
 function generateCodeVerifier() {
