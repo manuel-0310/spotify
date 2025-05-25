@@ -245,6 +245,30 @@ button {
   cursor: default;
 }
 
+#login-btn {
+  background-color: #fff;
+  color: #1db954;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(29, 185, 84, 0.5);
+}
+
+#login-btn:hover {
+  background-color: #1ed760;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(29, 215, 100, 0.7);
+}
+
+#login-btn:focus {
+  outline: none;
+  box-shadow: 0
+}
 .song-card:hover {
   background: linear-gradient(90deg, #862020, #0e4282);
   color: #fff;
