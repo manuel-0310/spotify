@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 CLIENT_ID = 'd03b826ade884822b71d25a3b592a836'
 CLIENT_SECRET = 'f337272166764c9cbbf4ff20e52eb810'  # ← pon aquí tu client secret
-REDIRECT_URI = 'http://127.0.0.1:5500/callback.html'
+REDIRECT_URI = 'https://manuel-0310.github.io/top5songs/callback.html'
 
 @app.route('/get_token')
 def get_token():

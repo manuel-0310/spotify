@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const top5 = filteredTracks.slice(0, 5);
 
       resultsSection.innerHTML = `
-        <h2>Tu Top 5 canciones de ${artistName} (${timeRange.replace('_', ' ')})</h2>
+        <h2>Tu Top 5 canciones de ${artistName}</h2>
         <ul class="track-list">
           ${top5.map(track => {
             const artistNames = track.artists.map(artist => artist.name).join(', ');

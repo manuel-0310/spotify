@@ -77,6 +77,32 @@ body::after {
   animation-duration: 16s, 60s;
 }
 
+/* Estilo para el select de periodo de tiempo */
+#time-range {
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1db954;
+  background-color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(29, 185, 84, 0.4);
+  transition: box-shadow 0.3s ease;
+  margin-left: 1rem;
+  min-width: 160px;
+}
+
+#time-range:hover {
+  box-shadow: 0 6px 16px rgba(29, 215, 100, 0.7);
+}
+
+#time-range:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.8);
+}
+
+
 /* Círculo 3 */
 .circle3 {
   top: 20%;
