@@ -14,17 +14,25 @@
         <div class="circle circle4"></div>
         <main class="container">
             <section class="search-section">
-                <h1>Are you ready to know your top 5 songs from your favorite
-                    artist?</h1>
+                <h1>¿Estás listo para saber el top 5 de tu artista favorito?</h1>
                 <form id="artist-form">
+                    <label for="time-range">Selecciona periodo:</label>
+                    <select id="time-range" name="time-range">
+                        <option value="short_term">Últimas 4 semanas</option>
+                        <option value="medium_term" selected>Últimos 6
+                            meses</option>
+                        <option value="long_term">Último año</option>
+                    </select>
+
                     <input
                         type="text"
                         id="artist-input"
                         name="artist"
-                        placeholder="Your favorite artist"
+                        placeholder="Tu artista favorito" 
                         autocomplete="off" />
-                    <button type="submit">Search</button>
+                    <button type="submit">Buscar</button>
                 </form>
+
             </section>
             <section class="results-section" aria-live="polite">
                 <!-- Aquí se mostrarán las canciones -->
