@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top 50 Spotify</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logout-link">Cerrar sesión</a>
+  </header>
+
+  <main>
+    <section class="time-range-selector">
+      <label for="time-range">Selecciona el período:</label>
+      <select id="time-range">
+        <option value="short_term">Último mes</option>
+        <option value="medium_term" selected>Últimos 6 meses</option>
+        <option value="long_term">Todo el tiempo</option>
+      </select>
+    </section>
+
+    <section class="top-section">
+      <h2>Top 50 Canciones</h2>
+      <button id="export-button">Exportar a Spotify</button>
+      <ul id="top-tracks" class="item-list"></ul>
+    </section>
+
+    <section class="top-section">
+      <h2>Top 50 Artistas</h2>
+      <ul id="top-artists" class="item-list"></ul>
+    </section>
+
+    <section class="top-section">
+      <h2>Top 50 Álbumes</h2>
+      <ul id="top-albums" class="item-list"></ul>
+    </section>
+  </main>
+
+  <script src="top50.js"></script>
+</body>
+</html>

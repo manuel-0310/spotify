@@ -1,55 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Callback Spotify</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autenticando...</title>
 </head>
 <body>
-  <h2>Procesando autenticación...</h2>
+  <h2>Procesando autenticación con Spotify...</h2>
+  <pre id="log"></pre>
+
   <script>
     async function getAccessToken(code) {
       const codeVerifier = localStorage.getItem('code_verifier');
+      if (!codeVerifier) {
+        document.getElementById('log').textContent = 'Error: No hay code_verifier en localStorage.';
+        return;
+      }
+
+      const redirectUri = 'https://manuel-0310.github.io/top5songs/callback.html';
 
       const body = new URLSearchParams({
         client_id: 'd03b826ade884822b71d25a3b592a836',
         grant_type: 'authorization_code',
-        code,
-redirect_uri: 'https://manuel-0310.github.io/top5songs/callback.html',
+        code: code,
+        redirect_uri: redirectUri,
         code_verifier: codeVerifier
       });
 
-      const response = await fetch('https://accounts.spotify.com/api/token', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: body.toString()
-      });
+      try {
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString()
+        });
 
-      if (!response.ok) {
-        document.body.innerHTML = '<p>Error al obtener el token</p>';
-        return null;
+        const result = await response.json();
+
+        if (!response.ok) {
+          document.getElementById('log').textContent =
+            `Error ${response.status}: ${result.error || 'Desconocido'}\n` +
+            (result.error_description || '');
+          return;
+        }
+
+        localStorage.setItem('access_token', result.access_token);
+        window.location.href = 'index.html';
+
+      } catch (err) {
+        document.getElementById('log').textContent = 'Error de red: ' + err.message;
       }
-
-      const data = await response.json();
-      return data.access_token;
     }
 
-    async function main() {
+    function main() {
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
       if (!code) {
-        document.body.innerHTML = '<p>No se encontró código de autorización</p>';
+        document.getElementById('log').textContent = 'No se encontró ningún code en la URL.';
         return;
       }
 
-      const token = await getAccessToken(code);
-      if (!token) return;
-
-      // Guardamos el token para usarlo en index.html
-      localStorage.setItem('access_token', token);
-
-      // Redirigimos a la página principal para mostrar el buscador
-      window.location = 'index.html';
+      getAccessToken(code);
     }
 
     main();

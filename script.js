@@ -21,10 +21,9 @@ document.getElementById('login-btn').addEventListener('click', async () => {
   const codeVerifier = generateCodeVerifier();
   localStorage.setItem('code_verifier', codeVerifier);
   const codeChallenge = await generateCodeChallenge(codeVerifier);
-  const scope = 'user-top-read';
-
+  const scope = 'user-top-read playlist-modify-public playlist-modify-private';
   const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scope)}&redirect_uri=${encodeURIComponent(redirectUri)}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
-  
+
   window.location = authUrl;
 });
 
