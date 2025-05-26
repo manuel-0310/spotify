@@ -138,7 +138,7 @@ body::after {
 }
 
 /* Estilo para el select de periodo de tiempo */
-#time-range {
+#time-range, #top-form {
   padding: 0.6rem 1rem;
   border-radius: 13px;
   border: none;
