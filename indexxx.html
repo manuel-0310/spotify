@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Spotify</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Fondos circulares -->
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <div class="circle circle3"></div>
+  <div class="circle circle4"></div>
+
+  <main class="container">
+    <section class="search-section">
+      <h1>Explora tu música más escuchada 🎧</h1>
+
+      <form id="home-form">
+        <button type="button" id="go-top5">Top 5</button>
+        <button type="button" id="go-top50">Top 50</button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const hasToken = !!localStorage.getItem('access_token');
+
+    document.getElementById('go-top5').addEventListener('click', () => {
+      if (hasToken) {
+        window.location.href = 'index.html';
+      } else {
+        window.location.href = 'index.html'; // donde tengas tu login
+      }
+    });
+
+    document.getElementById('go-top50').addEventListener('click', () => {
+      if (hasToken) {
+        window.location.href = 'top50.html';
+      } else {
+        window.location.href = 'index.html'; // también desde ahí inicias sesión
+      }
+    });
+  </script>
+</body>
+</html>

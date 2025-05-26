@@ -1,41 +1,42 @@
+<!-- top50.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Top 50 Spotify</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <a href="index.html" class="logout-link">Cerrar sesión</a>
-  </header>
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+  <div class="circle circle3"></div>
+  <div class="circle circle4"></div>
 
-  <main>
-    <section class="time-range-selector">
-      <label for="time-range">Selecciona el período:</label>
-      <select id="time-range">
-        <option value="short_term">Último mes</option>
-        <option value="medium_term" selected>Últimos 6 meses</option>
-        <option value="long_term">Todo el tiempo</option>
-      </select>
+  <button id="logout-btn">Cerrar sesión</button>
+
+  <main class="container">
+    <section class="search-section">
+      <h1>¡Explora tu Top 50!</h1>
+      <form id="top-form">
+        <select id="top-type">
+          <option value="tracks">Canciones</option>
+          <option value="artists">Artistas</option>
+          <option value="albums">Álbumes</option>
+        </select>
+        <select id="time-range">
+          <option value="short_term">Último mes</option>
+          <option value="medium_term" selected>Últimos 6 meses</option>
+          <option value="long_term">Todo el tiempo</option>
+        </select>
+        <button type="submit">Ver mi Top 50</button>
+      </form>
+      <div id="export-section" style="display:none;">
+        <button id="export-button">Exportar a Spotify</button>
+      </div>
     </section>
 
-    <section class="top-section">
-      <h2>Top 50 Canciones</h2>
-      <button id="export-button">Exportar a Spotify</button>
-      <ul id="top-tracks" class="item-list"></ul>
-    </section>
-
-    <section class="top-section">
-      <h2>Top 50 Artistas</h2>
-      <ul id="top-artists" class="item-list"></ul>
-    </section>
-
-    <section class="top-section">
-      <h2>Top 50 Álbumes</h2>
-      <ul id="top-albums" class="item-list"></ul>
-    </section>
+    <section class="results-section" id="results"></section>
   </main>
 
   <script src="top50.js"></script>

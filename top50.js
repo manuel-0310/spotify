@@ -1,122 +1,133 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const accessToken = localStorage.getItem('access_token');
-  if (!accessToken) {
-    window.location.href = 'index.html';
-    return;
-  }
+// top50.js
 
-  const timeRangeSelect = document.getElementById('time-range');
-  const topTracksList = document.getElementById('top-tracks');
-  const topArtistsList = document.getElementById('top-artists');
-  const topAlbumsList = document.getElementById('top-albums');
-  const exportButton = document.getElementById('export-button');
+const accessToken = localStorage.getItem('access_token');
+if (!accessToken) {
+  window.location.href = 'index.html';
+}
 
-  let topTracks = [];
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('code_verifier');
+  location.href = 'index.html';
+});
 
-  const fetchTopItems = async (type, timeRange) => {
-    const response = await fetch(`https://api.spotify.com/v1/me/top/${type}?limit=50&time_range=${timeRange}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-    });
-    if (!response.ok) {
-      throw new Error(`Error fetching top ${type}: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data.items;
-  };
+const form = document.getElementById('top-form');
+const topTypeSelect = document.getElementById('top-type');
+const timeRangeSelect = document.getElementById('time-range');
+const resultsSection = document.getElementById('results');
+const exportSection = document.getElementById('export-section');
+const exportButton = document.getElementById('export-button');
 
-  const renderList = (items, container, type) => {
-    container.innerHTML = '';
-    items.forEach((item, index) => {
-      const listItem = document.createElement('li');
-      const img = document.createElement('img');
-      const info = document.createElement('div');
+let topTracks = [];
 
-      if (type === 'tracks') {
-        img.src = item.album.images[0]?.url || '';
-        info.innerHTML = `<strong>${index + 1}. ${item.name}</strong><br>${item.artists.map(artist => artist.name).join(', ')}`;
-      } else if (type === 'artists') {
-        img.src = item.images[0]?.url || '';
-        info.innerHTML = `<strong>${index + 1}. ${item.name}</strong>`;
-      } else if (type === 'albums') {
-        img.src = item.images[0]?.url || '';
-        info.innerHTML = `<strong>${index + 1}. ${item.name}</strong><br>${item.artists.map(artist => artist.name).join(', ')}`;
-      }
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-      listItem.appendChild(img);
-      listItem.appendChild(info);
-      container.appendChild(listItem);
-    });
-  };
+  const type = topTypeSelect.value;
+  const timeRange = timeRangeSelect.value;
+  resultsSection.innerHTML = '<p>Cargando...</p>';
+  exportSection.style.display = 'none';
 
-  const loadTopItems = async () => {
-    const timeRange = timeRangeSelect.value;
-    try {
-      topTracks = await fetchTopItems('tracks', timeRange);
-      const topArtists = await fetchTopItems('artists', timeRange);
-
-      // Extract unique albums from top tracks
-      const albumsMap = new Map();
-      topTracks.forEach(track => {
-        const album = track.album;
-        if (!albumsMap.has(album.id)) {
-          albumsMap.set(album.id, album);
-        }
+  try {
+    if (type === 'albums') {
+      const tracks = await fetchTopItems('tracks', timeRange);
+      const albumMap = new Map();
+      tracks.forEach(t => {
+        if (!albumMap.has(t.album.id)) albumMap.set(t.album.id, t.album);
       });
-      const topAlbums = Array.from(albumsMap.values()).slice(0, 50);
-
-      renderList(topTracks, topTracksList, 'tracks');
-      renderList(topArtists, topArtistsList, 'artists');
-      renderList(topAlbums, topAlbumsList, 'albums');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  timeRangeSelect.addEventListener('change', loadTopItems);
-
-  exportButton.addEventListener('click', async () => {
-    const userResponse = await fetch('https://api.spotify.com/v1/me', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`
+      const albums = Array.from(albumMap.values()).slice(0, 50);
+      renderItems(albums, 'album');
+    } else {
+      const items = await fetchTopItems(type, timeRange);
+      renderItems(items, type);
+      if (type === 'tracks') {
+        topTracks = items;
+        exportSection.style.display = 'block';
       }
-    });
-    const userData = await userResponse.json();
-    const userId = userData.id;
+    }
+  } catch (err) {
+    resultsSection.innerHTML = `<p>Error: ${err.message}</p>`;
+  }
+});
 
-    const playlistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+async function fetchTopItems(type, timeRange) {
+  const res = await fetch(`https://api.spotify.com/v1/me/top/${type}?limit=50&time_range=${timeRange}`, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+  if (!res.ok) throw new Error(`No se pudo obtener tu top ${type}`);
+  const data = await res.json();
+  return data.items;
+}
+
+function renderItems(items, type) {
+  resultsSection.innerHTML = '';
+  const list = document.createElement('ul');
+  list.className = 'track-list';
+
+  items.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = 'track-item';
+
+    const img = document.createElement('img');
+    const info = document.createElement('div');
+    let name = '', sub = '';
+
+    if (type === 'tracks') {
+      img.src = item.album.images[0]?.url || '';
+      name = item.name;
+      sub = item.artists.map(a => a.name).join(', ');
+    } else if (type === 'artists') {
+      img.src = item.images[0]?.url || '';
+      name = item.name;
+      sub = '';
+    } else if (type === 'album') {
+      img.src = item.images[0]?.url || '';
+      name = item.name;
+      sub = item.artists.map(a => a.name).join(', ');
+    }
+
+    info.innerHTML = `<p><strong>${i + 1}. ${name}</strong></p><p>${sub}</p>`;
+    li.appendChild(img);
+    li.appendChild(info);
+    list.appendChild(li);
+  });
+
+  resultsSection.appendChild(list);
+}
+
+exportButton.addEventListener('click', async () => {
+  try {
+    const userRes = await fetch('https://api.spotify.com/v1/me', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    const user = await userRes.json();
+
+    const createRes = await fetch(`https://api.spotify.com/v1/users/${user.id}/playlists`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        name: 'Top 50 Canciones',
-        public: true
-      })
+      body: JSON.stringify({ name: 'Top 50 Canciones', public: true })
     });
-    const playlistData = await playlistResponse.json();
-    const playlistId = playlistData.id;
 
-    const trackUris = topTracks.map(track => track.uri);
+    const playlist = await createRes.json();
+    const uris = topTracks.map(t => t.uri);
 
-    for (let i = 0; i < trackUris.length; i += 100) {
-      const urisChunk = trackUris.slice(i, i + 100);
-      await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    for (let i = 0; i < uris.length; i += 100) {
+      const chunk = uris.slice(i, i + 100);
+      await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          uris: urisChunk
-        })
+        body: JSON.stringify({ uris: chunk })
       });
     }
 
-    alert('¡Playlist creada exitosamente en tu cuenta de Spotify!');
-  });
-
-  loadTopItems();
+    alert('Playlist creada exitosamente en tu Spotify!');
+  } catch (err) {
+    alert('Error al exportar la playlist: ' + err.message);
+  }
 });
